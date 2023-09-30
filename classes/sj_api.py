@@ -1,6 +1,8 @@
-from classes.abstract_classes.abstract_api import AbstractAPI
-import requests
 import os
+
+import requests
+
+from classes.abstract_classes.abstract_api import AbstractAPI
 
 
 class SuperJobAPI(AbstractAPI):
@@ -8,24 +10,26 @@ class SuperJobAPI(AbstractAPI):
     API_vacancies_url = 'https://api.superjob.ru/2.0/vacancies/'
     API_KEY = os.getenv('API_TOKEN_SJ')
 
-    def __init__(self, per_page=20, text='Python', area='Москва'):
+    def __init__(self, num_vacancies=20, search_query='Python', area='Москва'):
         """
         Инициализатор экземпляров класса для работы с API
-        :param per_page: количество вакансий на странице, по умолчанию 20
-        :param text: текст запроса для поиска вакансий, по умолчанию Python
+        :param num_vacancies: количество вакансий на странице, по умолчанию 20
+        :param search_query: текст запроса для поиска вакансий, по умолчанию Python
         :param area: название страны, региона или города для поиска, по умолчанию Москва
         page: страница поиска, по умолчанию = 0
         query_parameters: словарь с параметрами запроса
         """
         self.page = 0
-        self.per_page: int = per_page
-        self.text: str = text
-        self.area: str = area
+        self.per_page = num_vacancies
+        self.text = search_query
+        self.area = area
 
-        self.query_parameters = {'page': self.page,
-                                 'count': self.per_page,
-                                 'keyword': self.text,
-                                 'town': self.area}
+        self.query_parameters = {
+            'page': self.page,
+            'count': self.per_page,
+            'keyword': self.text,
+            'town': self.area
+        }
 
     def get_vacancies_by_api(self):
         """Получает вакансии через API"""
@@ -34,14 +38,14 @@ class SuperJobAPI(AbstractAPI):
         if response.status_code == 200:
             response_json = response.json()
             vacancies = response_json['objects']
-            list_vacancies = self.selection_vacancy_parameters(vacancies)
+            list_vacancies = self.select_vacancy_parameters(vacancies)
+            print(f'Получено {len(list_vacancies)} вакансий')
             return list_vacancies
-        else:
-            print(f'Ошибка {response.status_code} выполнения запроса')
-            return []
+        print(f'Ошибка {response.status_code} выполнения запроса')
+        return []
 
     @staticmethod
-    def selection_vacancy_parameters(vacancies_data):
+    def select_vacancy_parameters(vacancies_data):
         """
         Выборка определенных параметров вакансии
         :param vacancies_data: список вакансий полученных через API
@@ -61,13 +65,14 @@ class SuperJobAPI(AbstractAPI):
             vacancy_requirement = vacancy.get('candidat')
             vacancy_url = vacancy.get('link')
 
-            vacancy_card = {'vacancy_name': vacancy_name,
-                            'vacancy_city': vacancy_city,
-                            'salary_from': salary_from,
-                            'salary_to': salary_to,
-                            'currency': currency,
-                            'vacancy_requirement': vacancy_requirement,
-                            'vacancy_url': vacancy_url
-                            }
+            vacancy_card = {
+                'vacancy_name': vacancy_name,
+                'vacancy_city': vacancy_city,
+                'salary_from': salary_from,
+                'salary_to': salary_to,
+                'currency': currency,
+                'vacancy_requirement': vacancy_requirement,
+                'vacancy_url': vacancy_url
+            }
             vacancies_by_parameters.append(vacancy_card)
         return vacancies_by_parameters

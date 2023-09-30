@@ -10,7 +10,7 @@ class AbstractAPI(ABC):
 
     @staticmethod
     @abstractmethod
-    def selection_vacancy_parameters(vacancies_data):
+    def select_vacancy_parameters(vacancies_data):
         """Выборка определенных параметров вакансии.
         Возвращает список вакансий с этими параметрами"""
         pass
