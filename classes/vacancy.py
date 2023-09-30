@@ -21,13 +21,13 @@ class Vacancy:
 
     def __str__(self):
         """Строковое представление вакансии"""
-        return f'''
-        Название вакансии: {self.vacancy_name}
-        Страна, регион, город: {self.vacancy_city}
-        Нижний уровень зарплаты: {self.salary_from}
-        Верхний уровень зарплаты:{self.salary_to}
-        Валюта зарплаты: {self.currency}
-        Требования к вакансии: {self.vacancy_requirement}
-        Ссылка на вакансию: {self.vacancy_url}
-        '''
+        return (
+            f'Название вакансии: {self.vacancy_name}\n'
+            f'Страна, регион, город: {self.vacancy_city}\n'
+            f'Нижний уровень зарплаты: {self.salary_from}\n'
+            f'Верхний уровень зарплаты: {self.salary_to}\n'
+            f'Валюта зарплаты: {self.currency}\n'
+            f'Требования к вакансии: {self.vacancy_requirement}\n'
+            f'Ссылка на вакансию: {self.vacancy_url}\n'
+        )
 
