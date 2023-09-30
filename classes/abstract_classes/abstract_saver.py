@@ -27,3 +27,9 @@ class VacanciesSaver(ABC):
         :return:
         """
         pass
+
+    def clear_json(self):
+        """
+        Очищает json файл
+        """
+        pass

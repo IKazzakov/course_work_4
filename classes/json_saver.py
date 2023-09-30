@@ -1,6 +1,7 @@
-from classes.abstract_classes.abstract_saver import VacanciesSaver
 import json
 import os
+
+from classes.abstract_classes.abstract_saver import VacanciesSaver
 
 
 class JSONSaver(VacanciesSaver):
@@ -41,7 +42,7 @@ class JSONSaver(VacanciesSaver):
                 vacancies = json.load(file)
                 return vacancies
         except FileNotFoundError:
-            print('Файл не найден')
+            raise FileNotFoundError('Файл не найден')
 
     def get_instances_from_json(self, class_name):
         """
@@ -49,8 +50,14 @@ class JSONSaver(VacanciesSaver):
         :param class_name: имя класса
         :return: список экземпляров класса
         """
-        instances = []
         vacancies = self.load_vacancies()
-        for vacancy in vacancies:
-            instances.append(class_name(vacancy))
+        instances = [class_name(vacancy) for vacancy in vacancies]
         return instances
+
+    def clear_json(self):
+        """
+        Очищает json файл
+        """
+        with open(self.path_to_json, 'w') as file:
+            file.write(json.dumps({}))
+        print('Данные по вакансиям удалены из json файла')
