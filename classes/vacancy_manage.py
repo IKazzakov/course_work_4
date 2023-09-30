@@ -1,7 +1,10 @@
-from classes.vacancy import Vacancy
+import csv
 import operator
 import os
-import csv
+
+import openpyxl
+
+from classes.vacancy import Vacancy
 
 
 class VacancyManage(Vacancy):
@@ -52,25 +55,62 @@ class VacancyManage(Vacancy):
             print('Неверный формат ввода. Установлено значение в топ 3 вакансии')
             number_of_top = 3
 
-        top_vacancies = sort_vacancies[0:number_of_top]
+        top_vacancies = sort_vacancies[:number_of_top]
         for vacancy in top_vacancies:
             print(vacancy)
         return top_vacancies
 
     def save_to_csv(self, filename, list_vacancies):
-        directory = os.path.join('user_data')
-        filename += '.csv'
+        """
+        Сохраняет вакансии в csv файл
+        :param filename: имя файла
+        :param list_vacancies: список вакансий
+        """
+        directory = self.create_directory()
         path = os.path.join(directory, filename)
-        if not os.path.exists(directory):
-            os.mkdir(directory)
         try:
             with open(path, 'w', newline='', encoding='utf-8') as file:
-                fieldnames = ['vacancy_name', 'vacancy_city', 'salary_from',
-                              'salary_to', 'currency', 'vacancy_requirement', 'vacancy_url']
+                fieldnames = [
+                    'vacancy_name', 'vacancy_city', 'salary_from',
+                    'salary_to', 'currency', 'vacancy_requirement', 'vacancy_url'
+                ]
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
                 writer.writeheader()
                 for vacancy in list_vacancies:
                     writer.writerow(vacancy.__dict__)
-                f'Данные по вакансиям записаны в файл {filename}'
+                print(f'Данные по вакансиям записаны в файл {filename}')
         except Exception as e:
             print(f'Ошибка записи в файл {e}')
+
+    def save_to_excel(self, filename, list_vacancies):
+        """
+        Сохраняет вакансии в excel файл
+        :param filename: имя файла
+        :param list_vacancies: список вакансий
+        """
+        directory = self.create_directory()
+        path = os.path.join(directory, filename)
+        try:
+            book = openpyxl.Workbook()
+            sheet = book.active
+            headers = list(list_vacancies[0].__dict__.keys())
+            sheet.append(headers)
+            for vacancy in list_vacancies:
+                row = list(vacancy.__dict__.values())
+                sheet.append(row)
+            book.save(path)
+            print(f'Данные по вакансиям записаны в файл {filename}')
+        except Exception as e:
+            print(f'Ошибка записи в файл {e}')
+
+    @staticmethod
+    def create_directory():
+        """
+        Создает директорию для сохранения вакансий
+        :return: имя директории
+        """
+        directory_name = 'user_data'
+        directory_path = os.path.join(directory_name)
+        if not os.path.exists(directory_path):
+            os.mkdir(directory_path)
+        return directory_name
