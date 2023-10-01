@@ -33,7 +33,7 @@ class VacancyManage(Vacancy):
         """
         vacancies_by_keywords = []
         for vacancy in list_vacancies:
-            for key, value in vacancy.__dict__.items():
+            for value in vacancy.__dict__.values():
                 if any(keyword.lower() in str(value).lower() for keyword in keywords):
                     vacancies_by_keywords.append(vacancy)
                     break
@@ -49,15 +49,14 @@ class VacancyManage(Vacancy):
             number_of_top = int(
                 input(f'Введите число от 1 до {len(sort_vacancies)} для вывода топ вакансий по зарплате: '))
             if number_of_top < 1 or number_of_top > len(sort_vacancies):
-                print('Неверный формат ввода. Установлено значение в топ 3 вакансии')
                 number_of_top = 3
+                print('Неверный формат ввода. Установлено значение в топ 3 вакансии')
         except ValueError:
-            print('Неверный формат ввода. Установлено значение в топ 3 вакансии')
             number_of_top = 3
+            print('Неверный формат ввода. Установлено значение в топ 3 вакансии')
 
         top_vacancies = sort_vacancies[:number_of_top]
-        for vacancy in top_vacancies:
-            print(vacancy)
+        print(*top_vacancies, sep='\n')
         return top_vacancies
 
     def save_to_csv(self, filename, list_vacancies):
@@ -66,6 +65,7 @@ class VacancyManage(Vacancy):
         :param filename: имя файла
         :param list_vacancies: список вакансий
         """
+        # Создаем директорию для сохранения вакансий
         directory = self.create_directory()
         path = os.path.join(directory, filename)
         try:
@@ -76,8 +76,7 @@ class VacancyManage(Vacancy):
                 ]
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
                 writer.writeheader()
-                for vacancy in list_vacancies:
-                    writer.writerow(vacancy.__dict__)
+                writer.writerows([vacancy.__dict__ for vacancy in list_vacancies])
                 print(f'Данные по вакансиям записаны в файл {filename}')
         except Exception as e:
             print(f'Ошибка записи в файл {e}')
@@ -88,6 +87,7 @@ class VacancyManage(Vacancy):
         :param filename: имя файла
         :param list_vacancies: список вакансий
         """
+        # Создаем директорию для сохранения вакансий
         directory = self.create_directory()
         path = os.path.join(directory, filename)
         try:
