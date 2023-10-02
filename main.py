@@ -16,7 +16,9 @@ def main():
     # Вызываем функцию для вывода топ N вакансий по зарплате
     top_vacancies = vacancy_manage.get_top_vacancies_by_salary()
     # Вызываем функцию для поиска вакансий по ключевым словам и сохранения в csv/excel файл
-    user_interaction.get_vacancies_by_keywords(vacancy_manage, top_vacancies)
+    user_interaction.get_filtered_vacancies_and_save(vacancy_manage, top_vacancies)
+    print('Программа завершена')
+    json_saver.clear_json()
 
 
 if __name__ == '__main__':
