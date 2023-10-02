@@ -27,7 +27,7 @@ class SuperJobAPI(AbstractAPI):
         self.query_parameters = {
             'page': self.page,
             'count': self.per_page,
-            'keyword': self.text,
+            'keywords': self.text,
             'town': self.area
         }
 
@@ -39,7 +39,7 @@ class SuperJobAPI(AbstractAPI):
             response_json = response.json()
             vacancies = response_json['objects']
             list_vacancies = self.select_vacancy_parameters(vacancies)
-            print(f'Получено {len(list_vacancies)} вакансий')
+            print(f'Получено {len(list_vacancies)} вакансий с платформы Super Job')
             return list_vacancies
         print(f'Ошибка {response.status_code} выполнения запроса')
         return []

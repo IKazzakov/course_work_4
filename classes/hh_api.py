@@ -25,8 +25,8 @@ class HeadHunterAPI(AbstractAPI):
 
         self.query_parameters = {
             'page': self.page,
-            'num_vacancies': self.per_page,
-            'search_query': self.text,
+            'per_page': self.per_page,
+            'text': self.text,
             'area': self.area
         }
 
@@ -37,7 +37,7 @@ class HeadHunterAPI(AbstractAPI):
             response_json = response.json()
             vacancies = response_json['items']
             list_vacancies = self.select_vacancy_parameters(vacancies)
-            print(f'Получено {len(list_vacancies)} вакансий')
+            print(f'Получено {len(list_vacancies)} вакансий с платформы Head Hunter')
             return list_vacancies
         print(f'Ошибка {response.status_code} выполнения запроса')
         return []
