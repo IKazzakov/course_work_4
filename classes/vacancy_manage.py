@@ -46,14 +46,14 @@ class VacancyManage(Vacancy):
         """
         sort_vacancies = self.sort_vacancies_by_salary_from()
         try:
-            number_of_top = int(
-                input(f'Введите число от 1 до {len(sort_vacancies)} для вывода топ вакансий по зарплате: '))
+            print(f'Введите число от 1 до {len(sort_vacancies)} для вывода топ вакансий по зарплате: ', end='\n')
+            number_of_top = int(input(''))
             if number_of_top < 1 or number_of_top > len(sort_vacancies):
                 number_of_top = 3
-                print('Неверный формат ввода. Установлено значение в топ 3 вакансии')
+                print('Неверный формат ввода. Установлено значение в топ 3 вакансии', end='\n')
         except ValueError:
             number_of_top = 3
-            print('Неверный формат ввода. Установлено значение в топ 3 вакансии')
+            print('Неверный формат ввода. Установлено значение в топ 3 вакансии', end='\n')
 
         top_vacancies = sort_vacancies[:number_of_top]
         print(*top_vacancies, sep='\n')
