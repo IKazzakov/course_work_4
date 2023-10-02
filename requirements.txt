@@ -66,7 +66,7 @@ pytz==2022.1
 pyxdg==0.27
 PyYAML==5.4.1
 reportlab==3.6.8
-requests==2.25.1
+requests~=2.31.0
 requests-file==1.5.1
 SecretStorage==3.3.1
 setproctitle==1.2.2
@@ -86,3 +86,6 @@ xkit==0.0.0
 xlrd==1.2.0
 youtube-dl==2021.12.17
 zipp==1.0.0
+
+pandas~=2.1.1
+openpyxl~=3.1.2
